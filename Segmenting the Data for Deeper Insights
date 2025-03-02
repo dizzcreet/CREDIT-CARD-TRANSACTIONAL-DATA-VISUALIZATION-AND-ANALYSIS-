@@ -1,0 +1,26 @@
+1. Customer Demographics:
+o Age Groups: Segment customers into age groups (e.g., 18-24, 25-34, etc.) to
+identify different spending behaviors across age ranges.
+o Income Levels: Group customers based on income brackets (e.g., low, middle,
+high) to observe how income influences spending patterns.
+o Gender or Location: Segment by gender or geographical region to explore
+potential differences in transaction habits and preferences.
+2. Transaction Behavior:
+o Transaction Amount: Group customers based on average transaction amounts
+(e.g., small, medium, large spenders) to analyze high-value customers and
+identify potential fraud or loyalty patterns.
+o Merchant Categories: Segment by spending in various categories like groceries,
+travel, entertainment, or utilities to understand customer preferences and
+spending tendencies.
+3. Temporal Segmentation:
+o Time of Day/Week: Analyze transaction frequency by time of day, day of the
+week, or month to detect seasonal or time-based patterns in spending.
+o Recurring vs. One-Time Purchases: Separate recurring subscription
+transactions from one-time purchases to assess customer loyalty and lifetime
+value.
+4. Behavioral Segmentation:
+o Frequent vs. Infrequent Shoppers: Group customers who make regular
+transactions versus those who shop sporadically to identify loyal customers
+versus potential churn risks.
+o Fraudulent vs. Legitimate Transactions: Segment fraudulent transactions from
+legitimate ones for more focused fraud detection and analysis. 
