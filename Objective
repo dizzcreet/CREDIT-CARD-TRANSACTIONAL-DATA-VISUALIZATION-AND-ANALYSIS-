@@ -1,0 +1,8 @@
+The primary objective of this project is to analyze and visualize credit card transaction data to
+reveal meaningful patterns in consumer spending, categorize customers based on transaction
+behavior, and enhance fraud detection. By processing and cleaning the data, we ensure accurate
+insights, enabling us to uncover trends across various categories, demographics, and time
+frames. The project also aims to use clustering for customer segmentation, allowing for
+personalized recommendations and targeted marketing. Additionally, anomaly detection will be
+implemented to identify potential fraudulent transactions, ultimately contributing to financial
+security and enhancing decision-making for both consumers and businesses. 
