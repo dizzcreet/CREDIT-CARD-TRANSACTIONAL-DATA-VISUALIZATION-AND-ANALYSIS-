@@ -1,0 +1,137 @@
+# Importing necessary libraries
+ import pandas as pd
+ import numpy as np
+ from sklearn.preprocessing import StandardScaler
+
+ # Load the dataset
+ c_data = pd.read_csv('/kaggle/input/credit-cardcustomers/BankChurners.csv')
+
+ # Step 1: Dropping unnecessary columns
+ # The last two columns are unnecessary for the analysis
+ c_data = c_data.iloc[:, :-2]
+
+ # Step 2: Checking and Handling Missing Values
+ # Check for missing values
+ missing_values = c_data.isnull().sum()
+ print("Missing Values:\n", missing_values)
+
+ # If there are missing values, you can handle them like this:
+ # c_data.dropna(inplace=True) # Option 1: Drop missing values
+ # c_data.fillna(c_data.median(), inplace=True) # Option 2: Fill with
+median
+
+ # Step 3: Checking and Converting Data Types
+ # Convert 'Customer_Age' to integer if needed
+ c_data['Customer_Age'] = c_data['Customer_Age'].astype(int)
+
+ # Step 4: Removing Duplicates
+ # Check for duplicates
+ duplicate_count = c_data.duplicated().sum()
+ print(f"Number of duplicate rows: {duplicate_count}")
+
+ # Drop duplicate rows
+ c_data.drop_duplicates(inplace=True)
+
+ # Step 5: Encoding Categorical Variables
+ # Mapping 'Gender' to numerical values
+ c_data['Gender'] = c_data['Gender'].map({'M': 1, 'F': 0})
+
+ # One-hot encoding for other categorical variables
+25
+ c_data = pd.get_dummies(c_data, columns=['Education_Level',
+'Marital_Status', 'Income_Category', 'Card_Category'], drop_first=True)
+
+ # Step 6: Outlier Detection and Removal
+ # Using the IQR method for 'Credit_Limit'
+ Q1 = c_data['Credit_Limit'].quantile(0.25)
+ Q3 = c_data['Credit_Limit'].quantile(0.75)
+ IQR = Q3 - Q1
+ lower_bound = Q1 - 1.5 * IQR
+ upper_bound = Q3 + 1.5 * IQR
+
+ # Filter out outliers
+ c_data = c_data[(c_data['Credit_Limit'] >= lower_bound) &
+(c_data['Credit_Limit'] <= upper_bound)]
+
+ # Step 7: Feature Engineering (e.g., Age Group Binning)
+ c_data['Age_Group'] = pd.cut(c_data['Customer_Age'], bins=[0, 30, 50, 70,
+100], labels=['Young', 'Adult', 'Senior', 'Elder'])
+
+ # Step 8: Scaling Numerical Features
+ # Initialize the scaler
+ scaler = StandardScaler()
+
+ # Numerical features to scale
+ numerical_features = ['Credit_Limit', 'Total_Trans_Amt', 'Avg_Util
+fig = make_subplots(rows=2, cols=1,shared_xaxes=True,subplot_titles=('Perason
+Correaltion', 'Spearman Correaltion'))
+colorscale= [[1.0 , "rgb(165,0,38)"],
+ [0.8888888888888888, "rgb(215,48,39)"],
+ [0.7777777777777778, "rgb(244,109,67)"],
+ [0.6666666666666666, "rgb(253,174,97)"],
+ [0.5555555555555556, "rgb(254,224,144)"],
+ [0.4444444444444444, "rgb(224,243,248)"],
+ [0.3333333333333333, "rgb(171,217,233)"],
+ [0.2222222222222222, "rgb(116,173,209)"],
+ [0.1111111111111111, "rgb(69,117,180)"],
+ [0.0 , "rgb(49,54,149)"]]
+s_val =c_data.corr('pearson')
+s_idx = s_val.index
+s_col = s_val.columns
+s_val = s_val.values
+fig.add_trace(
+ go.Heatmap(x=s_col,y=s_idx,z=s_val,name='pearson',showscale=False,xgap=0.7,yg
+ap=0.7,colorscale=colorscale),
+ row=1, col=1
+)
+s_val =c_data.corr('spearman')
+s_idx = s_val.index
+s_col = s_val.columns
+s_val = s_val.values
+fig.add_trace(
+ go.Heatmap(x=s_col,y=s_idx,z=s_val,xgap=0.7,ygap=0.7,colorscale=colorscale),
+ row=2, col=1
+)
+fig.update_layout(
+ hoverlabel=dict(
+ bgcolor="white",
+ font_size=16,
+ font_family="Rockwell"
+ )
+)
+fig.update_layout(height=700, width=900, title_text="Numeric Correaltions")
+fig.show() 
+fig = make_subplots(rows=2, cols=1)
+tr1=go.Box(x=c_data['Credit_Limit'],name='Credit_Limit Box Plot',boxmean=True)
+tr2=go.Histogram(x=c_data['Credit_Limit'],name='Credit_Limit Histogram')
+fig.add_trace(tr1,row=1,col=1)
+fig.add_trace(tr2,row=2,col=1)
+fig.update_layout(height=700, width=1200, title_text="Distribution of the Credit
+Limit")
+fig.show()
+fig = make_subplots(rows=3, cols=1,shared_xaxes=True,subplot_titles=('Random
+Forest Cross Val Scores',
+ 'Adaboost
+Cross Val Scores',
+ 'SVM Cross
+Val Scores'))
+fig.add_trace(
+ go.Scatter(x=list(range(0,len(f1_cross_val_scores))),y=f1_cross_val_scores,na
+me='Random Forest'),
+ row=1, col=1
+)
+fig.add_trace( 
+ go.Scatter(x=list(range(0,len(ada_f1_cross_val_scores))),y=ada_f1_cross_val_s
+cores,name='Adaboost'),
+ row=2, col=1
+)
+fig.add_trace(
+ go.Scatter(x=list(range(0,len(svm_f1_cross_val_scores))),y=svm_f1_cross_val_s
+cores,name='SVM'),
+ row=3, col=1
+)
+fig.update_layout(height=700, width=900, title_text="Different Model 5 Fold Cross
+Validation")
+fig.update_yaxes(title_text="F1 Score")
+fig.update_xaxes(title_text="Fold #") 
+fig.show() 
